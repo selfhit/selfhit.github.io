@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Hit - Bet on Your Discipline</title>
+    <!-- Fonts: Inter for clean, modern UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons: FontAwesome for specific habit icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --surface-color: #161616;
+            --surface-hover: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --accent-color: #00dc82;
+            --accent-hover: #00bd6f;
+            --danger-color: #ef4444;
+            --border-color: #27272a;
+            --glass-bg: rgba(10, 10, 10, 0.8);
+            --font-main: 'Inter', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 220, 130, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: capitalize;
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            padding: 160px 0 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 220, 130, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .waitlist-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .waitlist-input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .waitlist-input:focus {
+            border-color: var(--accent-color);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .stats-ticker {
+            margin-top: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface-color);
+            padding: 8px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .stat-icon {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        .stat-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .stat-amount {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 60px;
+            font-weight: 700;
+        }
+
+        .habits-section {
+            padding: 100px 0;
+        }
+
+        .habits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .habit-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .habit-card:hover {
+            background: var(--surface-hover);
+            border-color: #3f3f46;
+            transform: translateY(-5px);
+        }
+
+        .icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .habit-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .habit-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .stake-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stake-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stake-value {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .mechanism-section {
+            padding: 100px 0;
+            background: #0f0f0f;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.03);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .step p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--surface-color);
+            border: 1px solid var(--accent-color);
+            color: var(--text-primary);
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .toast i {
+            color: var(--accent-color);
+        }
+
+        footer {
+            padding: 80px 0 40px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .copyright {
+            color: #52525b;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .waitlist-wrapper {
+                flex-direction: column;
+            }
+
+            .steps-container {
+                flex-direction: column;
+                gap: 60px;
+            }
+
+            .step-number {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin-bottom: -20px;
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hidden iframe for form submission */
+        #hidden_iframe {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-bolt"></i>
+                SelfHit
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it Works</a>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="#waitlist" class="btn btn-primary">Join Waitlist</a>
+                <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="glow"></div>
+        <div class="container">
+            <h1 class="fade-in-up">Bet on your discipline.<br>Your habits have a price.</h1>
+            <p class="fade-in-up" style="transition-delay: 0.1s;">
+                The first habit tracker with real stakes. Lock a deposit, verify your habits with AI, and earn your money back plus rewards.
+            </p>
+            
+            <div class="waitlist-wrapper fade-in-up" style="transition-delay: 0.2s;" id="waitlist">
+                <form 
+                    id="googleForm"
+                    action="https://docs.google.com/forms/d/e/1FAIpQLSf7YANosy-H5gaSR4u9vbL-7x65JSqKWCI-3T6NbmM0o2Oxdw/formResponse" 
+                    method="POST" 
+                    target="hidden_iframe"
+                    onsubmit="handleFormSubmit(event)"
+                    style="flex: 1; display: flex;">
+                    <input 
+                        type="email" 
+                        class="waitlist-input" 
+                        name="entry.1165321587" 
+                        placeholder="Enter your email address" 
+                        id="emailInput"
+                        required
+                        style="flex: 1; margin: 0;">
+                </form>
+                <button class="btn btn-primary" onclick="submitForm()">Join Waitlist</button>
+            </div>
+
+            <div class="stats-ticker fade-in-up" style="transition-delay: 0.3s;">
+                <i class="fa-solid fa-users stat-icon"></i>
+                <span class="stat-text">Join <span class="stat-amount"><span id="wagered-amount">500</span>+</span> early beta commiters to their goals</span>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="habits-section">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Habits you can actually stick to</h2>
+            <div class="habits-grid">
+                
+                <div class="habit-card fade-in-up">
+                    <div class="icon-box" style="color: #6ba3ff;">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <h3>Sleep Schedule</h3>
+                    <p>Wake up on time or lose your bet. We'll verify by scanning a barcode in your bathroom within 5 mins of your goal.</p>
+                    <div class="stake-info">
+                        <span class="stake-label">Morning Routine</span>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--accent-color);"></i>
+                    </div>
+                </div>
+
+                <div class="habit-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="icon-box" style="color: #ff9d5c;">
+                        <i class="fa-solid fa-person-running"></i>
+                    </div>
+                    <h3>Daily Jogging</h3>
+                    <p>Go for a run or lose your bet. GPS integration verifies your run distance and pace automatically.</p>
+                    <div class="stake-info">
+                        <span class="stake-label">Fitness Goals</span>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--accent-color);"></i>
+                    </div>
+                </div>
+
+                <div class="habit-card fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="icon-box" style="color: #5cff9d;">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <h3>Screen Time</h3>
+                    <p>Stop doom scrolling or lose your deposit. Connect your screen time API to prove you stayed off your bad apps.</p>
+                    <div class="stake-info">
+                        <span class="stake-label">Digital Detox</span>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--accent-color);"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="mechanism-section">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Put your money where your mouth is.</h2>
+            <p style="text-align: center; color: var(--text-secondary); max-width: 700px; margin: 0 auto 40px;">
+                Behavioral psychology shows we hate losing money more than we love gaining it. SelfHit leverages Loss Aversion to make your habits unbreakable.
+            </p>
+            <div class="steps-container">
+                
+                <div class="step fade-in-up">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <h3>Deposit a Stake</h3>
+                    <p>Pick a habit and put real funds to stake. $10, $50, or $500.</p>
+                </div>
+
+                <div class="step fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <h3>Prove Your Habit</h3>
+                    <p>Sync health data. No cheating.</p>
+                </div>
+
+                <div class="step fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <h3>Refund or Forfeit</h3>
+                    <p>Stick to your habits for the week. Pass and your stake is refunded</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p class="copyright">&copy; 2025 SelfHit. Bet on yourself or stay the same.</p>
+        </div>
+    </footer>
+
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>You're on the list! Get ready to build better habits.</span>
+    </div>
+
+    <!-- Hidden iframe to catch form submission -->
+    <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
+
+    <script>
+        // Animation on Scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const animatedElements = document.querySelectorAll('.fade-in-up');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+
+        // User count animation
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const easeOutQuad = 1 - (1 - progress) * (1 - progress);
+                
+                const currentVal = Math.floor(easeOutQuad * (end - start) + start);
+                obj.innerHTML = currentVal.toLocaleString('en-US');
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const wagerElement = document.getElementById("wagered-amount");
+        setTimeout(() => {
+            animateValue(wagerElement, 500, 2437, 2000);
+        }, 500);
+
+        // Form submission handler
+        function submitForm() {
+            const emailInput = document.getElementById('emailInput');
+            const form = document.getElementById('googleForm');
+            const btn = document.querySelector('#waitlist .btn');
+            const email = emailInput.value;
+
+            if (!email || !email.includes('@')) {
+                emailInput.style.borderColor = 'var(--danger-color)';
+                emailInput.focus();
+                return;
+            }
+
+            // Reset border color
+            emailInput.style.borderColor = 'var(--border-color)';
+
+            // Show loading state
+            const originalText = btn.innerText;
+            btn.innerText = 'Joining...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            // Submit the form to Google
+            form.submit();
+
+            // Show success animation after a delay
+            setTimeout(() => {
+                btn.innerText = 'Joined!';
+                btn.style.backgroundColor = '#fff';
+                btn.style.color = '#000';
+                btn.style.opacity = '1';
+                
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+
+                emailInput.value = '';
+
+                // Reset button and hide toast after 3 seconds
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.backgroundColor = '';
+                    btn.style.color = '';
+                    btn.disabled = false;
+                    
+                    toast.classList.remove('show');
+                }, 3000);
+
+            }, 1200);
+        }
+
+        // Handle form submit event (for Enter key)
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            submitForm();
+            return false;
+        }
+
+        // Mobile Menu
+        document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+            const navLinks = document.querySelector('.nav-links');
+            if(navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '70px';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.background = '#0a0a0a';
+                navLinks.style.padding = '20px';
+                navLinks.style.borderBottom = '1px solid #333';
+            }
+        });
+    </script>
+</body>
+</html>
